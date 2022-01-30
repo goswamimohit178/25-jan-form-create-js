@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/5b9f96b06f.js" crossorigin="anonymous"></script>
+  
+    <style>
+        * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-image: linear-gradient(to right, #1e07a0, #9b0d9b);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .container {
+    padding: 30px;
+    width: 400px;
+    border-radius: 10px;
+    background-image: linear-gradient(to right, #f7e3ff, #fa7c6e);
+  }
+  
+  .heading {
+    text-align: center;
+  }
+  .form-control {
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .form-control input {
+    display: block;
+    width: 100%;
+    outline: none;
+    border-radius: 5px;
+    border: 2px solid #d19ae6;
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  button {
+    display: block;
+    width: 100%;
+    background-image: linear-gradient(to right, #1e07a0, #d25536);
+    border-radius: 5px;
+    border: none;
+    padding: 15px;
+    margin-top: 40px;
+    color: white;
+  }
+  
+  button:hover {
+    background-color: #9471a2;
+    cursor: pointer;
+  }
+  
+  .form-control.success input {
+    border-color: #2bb344;
+  }
+  
+  .form-control.success i.fa-check-circle {
+    color: #2bb344;
+    visibility: visible;
+  }
+  
+  .form-control.failure input {
+    border-color: #f45f57;
+  }
+  
+  .form-control i {
+    position: absolute;
+    top: 30px;
+    right: 9px;
+    visibility: hidden;
+  }
+  
+  small {
+    color: #f45f57;
+    visibility: hidden;
+  }
+  
+  .form-control.failure small {
+    visibility: visible;
+  }
+  
+  .form-control.failure i.fa-exclamation-circle {
+    color: #f45f57;
+    visibility: visible;
+  }
+    </style>
+    <script>
+        var form = document.querySelector(".form");
+var username = document.getElementById("username");
+var email = document.getElementById("email");
+var password = document.getElementById("password");
+var passwordConfirm = document.getElementById("confirm-password");
+
+form.addEventListener("submit", submitForm);
+
+function submitForm(geek) {
+  geek.preventDefault();
+  checkUserName(username);
+  checkEmail(email);
+  checkPassword(password);
+  checkConfirmPassword(passwordConfirm);
+}
+function checkUserName(element) {
+  var nameOfUser = element.value;
+  if (nameOfUser === "") {
+    setError(element, "User name cannot be empty");
+  } else {
+    onSuccess(element);
+  }
+}
+function checkEmail(element) {
+  var emailValue = element.value;
+  if (emailValue === "") {
+    setError(element, "Email cannot be empty");
+  } else if (!isEmail(emailValue)) {
+    setError(element, "This is not a valid email");
+  } else {
+    onSuccess(element);
+  }
+}
+
+function checkPassword(element) {
+  var passwordValue = element.value;
+  if (passwordValue === "") {
+    setError(element, "password cannot be empty");
+  }
+  else {
+    onSuccess(element);
+    var specialCharacters = ["(" , "@" , "#"];
+    for(var i = 0 ; i < specialCharacters.length ; i++){
+      if(passwordValue.includes(specialCharacters[i])){
+        onSuccess(element);
+        break;
+      }
+      else{
+        setError(element,"Password should contain special characters");
+      }
+    }
+  }
+}
+function checkConfirmPassword(element) {
+  var passwordValue = password.value;
+  var confirmPasswordValue = element.value;
+  if (confirmPasswordValue === "") {
+    setError(element, "confirm password cannot be empty");
+  } else if (passwordValue !== confirmPasswordValue) {
+    setError(element, "passwords do not match");
+  } else {
+    onSuccess(element);
+  }
+}
+function isEmail(email) {
+  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    email
+  );
+}
+function setError(element, errorMessage) {
+  var formControl = element.parentElement;
+  formControl.className = "form-control failure";
+  formControl.querySelector("small").innerText = errorMessage;
+}
+
+function onSuccess(element) {
+  var formControl = element.parentElement;
+  formControl.className = "form-control success";
+}
+
+username.addEventListener("change", (e) => console.log(e.target.value));
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="heading">
+            <h2> Sign up Form</h2>
+        </div>
+        <form class="form">
+            <div class="form-control">
+                <label for="username">UserName</label>
+                <input type="text" id="username">
+                <small class="username" id="error"></small>
+                <i class="fas fa-exclamation-circle"></i>
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="form-control">
+                <label for="email">email</label>
+                <input type="text" id="email">
+                <small  class="email" id="error"></small>
+                <i class="fas fa-exclamation-circle"></i>
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="form-control">
+                <label for="password">password</label>
+                <input type="password" id="password">
+                <small  class="password" id="error"></small>
+                <i class="fas fa-exclamation-circle"></i>
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="form-control">
+                <label for="confirm-password">confirm password</label>
+                <input type="password" id="confirm-password">
+                <small  class="confirm-password" id="error"></small>
+                <i class="fas fa-exclamation-circle"></i>
+                <i class="fas fa-check-circle"></i>
+            </div>
+
+            <button>Submit</button>
+        </form>
+    </div>
+</body>
+</html>
